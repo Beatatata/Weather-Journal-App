@@ -27,6 +27,7 @@ app.listen(port, () => console.log(`Server running! Running on localhost: ${port
 
 // Callback function to complete GET '/all'
 app.get('/all', function(req, res) {
+    console.log(projectData);
     res.send(projectData);
 })
 
