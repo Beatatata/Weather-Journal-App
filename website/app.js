@@ -8,7 +8,7 @@ let date = new Date();
 // let newDate = date.getMonth()+'.'+ date.getDate()+'.'+ date.getFullYear();
 
 document.getElementById("generate").addEventListener("click", performAction)
-
+const allData = {};
 // 全局变量
 let userZip,content,data = 0;
 // get userZip
@@ -24,11 +24,9 @@ function Textarea(textareaK){ 
 function performAction(e){
     getTemp(baseURL, userZip, apiKey)
     .then(function(data){
-      postData('/add',{temp:data.main.temp,date:date,feeling:content})
+      const a =postData('/add',{temp:data.main.temp,date:date,feeling:content});
+      updateUI(a)
     })
-    .then(
-      updateUI()
-    )
 }
 
 const getTemp = async (baseURL, zip, key)=>{
@@ -46,7 +44,7 @@ const getTemp = async (baseURL, zip, key)=>{
 const retrieveData = async () =>{
   const request = await fetch('/all');
   try {
-    const allData = await request.json()
+    allData = await request.json()
   } catch (error) {
     console.log("error", error);
   }
@@ -54,8 +52,8 @@ const retrieveData = async () =>{
 
 /* Function to POST data */
 const postData = async ( url = '', data = {})=>{
-    console.log(data)
-      const response = await fetch(url, {
+    // console.log(data)
+    const response = await fetch(url, {
       method: 'POST', 
       credentials: 'same-origin', 
       headers: {
@@ -66,20 +64,19 @@ const postData = async ( url = '', data = {})=>{
    
       try {
         const newData = await response.json();
-        console.log(newData);
+        // console.log(newData);
         return newData
       }catch(error) {
       console.log("error", error);
       }
-   }
+}
 
-const updateUI = async () => {
-  const request = await fetch('/all');
+const updateUI = async (a) =>  {
   try{
-    const allData = await request.json();
-    document.getElementById('date').innerHTML = "date：" + allData.date;
-    document.getElementById('content').innerHTML = "feeling：" + allData.feel;
-    document.getElementById("temp").innerHTML = "temp：" +  allData.temp;
+    const newData = await a;
+    document.getElementById('date').innerHTML = "date：" + newData.date;
+    document.getElementById('content').innerHTML = "feeling：" + newData.feel;
+    document.getElementById("temp").innerHTML = "temp：" +  newData.temp;
   } catch(error){
     console.log("error",error)
   }

@@ -22,12 +22,11 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'website')));
 
 // Setup Server
-const port = 8888;
+const port = 8000;
 app.listen(port, () => console.log(`Server running! Running on localhost: ${port}!`))
 
 // Callback function to complete GET '/all'
 app.get('/all', function(req, res) {
-    console.log(projectData);
     res.send(projectData);
 })
 
